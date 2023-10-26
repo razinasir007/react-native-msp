@@ -8,7 +8,7 @@ export const ContactCard = (props) => {
             <Image source={require('../../assets/profileIcon1.png')} style={{ width: 50, height: 50, marginLeft: 10, borderRadius: 10 }} />
             <View style={styles.contactDetails}>
                 <View style={styles.contactTitle}>
-                    <Text style={{ fontSize: 18, fontWeight: 600 }}>{props.fullname}</Text>
+                    <Text style={{ fontSize: 18, fontWeight: 600 }}>{props.firstname} {props.lastname}</Text>
                     <Text style={{ fontSize: 15, fontWeight: 400 }}>{props.email}</Text>
                 </View>
                 <View>

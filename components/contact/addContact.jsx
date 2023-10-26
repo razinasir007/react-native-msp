@@ -1,22 +1,24 @@
 import React, { useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome";
+import { Formik } from 'formik';
 import Checkbox from 'expo-checkbox';
-import { Alert, Modal, StyleSheet, Text, TextInput, View, Pressable, Button, TouchableOpacity, ActivityIndicator,ToastAndroid } from 'react-native';
+import { Alert, Modal, StyleSheet, Text, TextInput, View, Pressable, Button, TouchableOpacity, ActivityIndicator, ToastAndroid } from 'react-native';
 import serviceHelper from '../../helperFunction';
+import { contactValidationSchema } from './validationSchema';
 
 export default function AddContact() {
     const [modalVisible, setModalVisible] = useState(false);
-    const [loader, setLoader]= useState(false)
-    const [contactDetails, setContactDetails]= useState({
-        firstname:'',
-        lastname:'',
-        email:'',
-        phonenumber:'',
-        mailaddress:'',
-        billingaddress:'',
+    const [loader, setLoader] = useState(false)
+    const [contactDetails, setContactDetails] = useState({
+        firstname: '',
+        lastname: '',
+        email: '',
+        phonenumber: '',
+        mailaddress: '',
+        billingaddress: '',
     })
 
-    const handleAddContact = () =>{
+    const handleAddContact = () => {
         setLoader(true)
         serviceHelper('contact', 'post', contactDetails).then((res) => {
             if (res.data) {
@@ -30,7 +32,7 @@ export default function AddContact() {
 
             }
         }).catch((err) => {
-          console.log('error', err)
+            console.log('error', err)
             setLoader(false)
             ToastAndroid.showWithGravity(
                 `${err}`,
@@ -55,95 +57,129 @@ export default function AddContact() {
                         <View style={styles.modalView}>
                             <Text style={styles.modalText}>Add Contact</Text>
 
-                            <View style={styles.Form}>
-                                <Text style={{ marginBottom: 7 }}>First Name</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder='First Name..'
-                                    onChangeText={(e) => setContactDetails((prev)=> ({
-                                        ...prev,
-                                        firstname:e
-                                    }))}
-                                    name='firstname'
+                            <Formik
+                                initialValues={{
+                                    firstname: '',
+                                    lastname: '',
+                                    email: '',
+                                    phonenumber: '',
+                                    billingaddress: '',
+                                    mailaddress: '',
+                                }}
+                                validationSchema={contactValidationSchema}
+                                onSubmit={(values, actions) => {
+                                    setLoader(true)
+                                    serviceHelper('contact', 'post', values).then((res) => {
+                                        if (res.data) {
+                                            console.log('response', res)
+                                            setLoader(false)
+                                           alert("contact added")
+                            
+                            
+                                        }
+                                    }).catch((err) => {
+                                        console.log('error', err)
+                                        setLoader(false)
+                                       alert("error")
+                                    })
+                                }}
+                            >
+                                {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+                                    <View style={styles.Form}>
+                                        <Text style={{ marginBottom: 7 }}>First Name</Text>
+                                        <TextInput
+                                            style={styles.input}
+                                            placeholder="First Name.."
+                                            onChangeText={handleChange('firstname')}
+                                            onBlur={handleBlur('firstname')}
+                                            value={values.firstname}
+                                        />
+                                        {touched.firstname && errors.firstname && (
+                                            <Text style={{ color: 'red' }}>{errors.firstname}</Text>
+                                        )}
+                                        <Text style={{ marginBottom: 7, marginTop: 7 }}>Last Name</Text>
+                                        <TextInput
+                                            style={styles.input}
+                                            placeholder="Last Name.."
+                                            onChangeText={handleChange('lastname')}
+                                            onBlur={handleBlur('lastname')}
+                                            value={values.lastname}
+                                        />
+                                        {touched.lastname && errors.lastname && (
+                                            <Text style={{ color: 'red' }}>{errors.lastname}</Text>
+                                        )}
+                                        <Text style={{ marginBottom: 7, marginTop: 7 }}>Email</Text>
+                                        <TextInput
+                                            style={styles.input}
+                                            placeholder="Email.."
+                                            onChangeText={handleChange('email')}
+                                            onBlur={handleBlur('email')}
+                                            value={values.email}
+                                        />
+                                        {touched.email && errors.email && (
+                                            <Text style={{ color: 'red' }}>{errors.email}</Text>
+                                        )}
+                                        <Text style={{ marginBottom: 7, marginTop: 7 }}>Phone Number</Text>
+                                        <TextInput
+                                            style={styles.input}
+                                            placeholder="Phone Number.."
+                                            onChangeText={handleChange('phonenumber')}
+                                            onBlur={handleBlur('phonenumber')}
+                                            value={values.phonenumber}
+                                        />
+                                        {touched.phonenumber && errors.phonenumber && (
+                                            <Text style={{ color: 'red' }}>{errors.phonenumber}</Text>
+                                        )}
+                                        <Text style={{ marginBottom: 7, marginTop: 7 }}>Mail Address</Text>
+                                        <TextInput
+                                            style={styles.input}
+                                            placeholder="Mail Address.."
+                                            onChangeText={handleChange('mailaddress')}
+                                            onBlur={handleBlur('mailaddress')}
+                                            value={values.mailaddress}
+                                        />
+                                        {touched.mailaddress && errors.mailaddress && (
+                                            <Text style={{ color: 'red' }}>{errors.mailaddress}</Text>
+                                        )}
 
-                                />
-                                <Text style={{ marginBottom: 7, marginTop: 7 }}>Last Name</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder='Last Name..'
-                                    onChangeText={(e) => setContactDetails((prev)=> ({
-                                        ...prev,
-                                        lastname:e
-                                    }))}
-
-                                />
-
-                                <Text style={{ marginBottom: 7, marginTop: 7 }}>Email</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder='Email..'
-                                    onChangeText={(e) => setContactDetails((prev)=> ({
-                                        ...prev,
-                                        email:e
-                                    }))}
 
 
-                                />
+                                        <View style={styles.checkbox}>
+                                            <Checkbox style={{ height: 14, width: 15 }} />
+                                            <Text style={{ marginLeft: 2 }}> Billing address is same as mail address</Text>
+                                        </View>
 
-                                <Text style={{ marginBottom: 7, marginTop: 7 }}>Phone Number</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder='Phone Number..'
-                                    onChangeText={(e) => setContactDetails((prev)=> ({
-                                        ...prev,
-                                        phonenumber:e
-                                    }))}
+                                        <Text style={{ marginBottom: 7, marginTop: 7 }}>Billing Address</Text>
+                                        <TextInput
+                                            style={styles.input}
+                                            placeholder="Billing Address.."
+                                            onChangeText={handleChange('billingaddress')}
+                                            onBlur={handleBlur('billingaddress')}
+                                            value={values.billingaddress}
+                                        />
+                                        {touched.billingaddress && errors.billingaddress && (
+                                            <Text style={{ color: 'red' }}>{errors.billingaddress}</Text>
+                                        )}
+                                        {/* ... Other form fields ... */}
+                                        <View style={styles.buttonContainer}>
+                                            <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
 
+                                                <Text style={{ fontSize: 15, marginLeft: 5, fontWeight: 500, color: 'black' }}>Close</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={styles.doneButton} onPress={handleSubmit} >
+                                                {
+                                                    loader ? <ActivityIndicator />
+                                                        : <Text style={{ fontSize: 15, marginLeft: 5, fontWeight: 500, color: 'white' }}>Add</Text>
+                                                }
 
-                                />
+                                            </TouchableOpacity>
+                                        </View>
 
-                                <Text style={{ marginBottom: 7, marginTop: 7 }}>Mail Address</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder='Mail Address..'
-                                    onChangeText={(e) => setContactDetails((prev)=> ({
-                                        ...prev,
-                                        mailaddress:e
-                                    }))}
+                                    </View>
 
+                                )}
+                            </Formik>
 
-                                />
-                                <View style={styles.checkbox}>
-                                    <Checkbox style={{height:14, width:15}} />
-                                    <Text style={{ marginLeft: 2 }}> Billing address is same as mail address</Text>
-                                </View>
-                                <Text style={{ marginBottom: 7, marginTop: 7 }}>Billing Address</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder='Billing Address..'
-                                    onChangeText={(e) => setContactDetails((prev)=> ({
-                                        ...prev,
-                                        billingaddress:e
-                                    }))}
-
-
-                                />
-
-
-                            </View>
-                            <View style={styles.buttonContainer}>
-                                <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
-
-                                    <Text style={{ fontSize: 15, marginLeft: 5, fontWeight: 500, color: 'black' }}>Close</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.doneButton} onPress={handleAddContact} >
-                                {
-                                    loader ? <ActivityIndicator />
-                                        : <Text style={{ fontSize: 15, marginLeft: 5, fontWeight: 500, color: 'white' }}>Add</Text>
-                                }
-                                    
-                                </TouchableOpacity>
-                            </View>
                         </View>
                     </View>
                 </Modal>
@@ -194,7 +230,7 @@ const styles = StyleSheet.create({
     },
     checkbox: {
         flexDirection: 'row',
-        alignItems:'center',
+        alignItems: 'center',
         marginTop: 10
     },
     textStyle: {

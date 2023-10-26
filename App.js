@@ -5,18 +5,24 @@ import { Button, SafeAreaView, StyleSheet, Text, View, StatusBar } from 'react-n
 import { SignIn } from './screens/signin';
 import { SignUp } from './screens/signup';
 import { Home } from './screens/home';
+import { AccountManagement } from './screens/settings/accountManagement';
+import { Chat } from './screens/chat';
 
 export default function App() {
+
+ 
   const Stack = createNativeStackNavigator();
   return (
     <View style={styles.container}>
-   
-    <NavigationContainer>
-      <Stack.Navigator>
-       
-        <Stack.Screen name="home" options={{headerShown:false}} component={Home} />
-      </Stack.Navigator>
-    </NavigationContainer>
+
+      <NavigationContainer>
+        <Stack.Navigator>
+
+          <Stack.Screen name="home" options={{ headerShown: false }} component={Home} />
+          <Stack.Screen name="account" options={{ headerShown: false }} component={AccountManagement} />
+          <Stack.Screen name="chat" options={{ headerShown: false }} component={Chat} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </View>
   );
 }
