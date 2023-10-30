@@ -7,20 +7,22 @@ import { SignUp } from './screens/signup';
 import { Home } from './screens/home';
 import { AccountManagement } from './screens/settings/accountManagement';
 import { Chat } from './screens/chat';
+import { Payments } from './screens/payments';
+
 
 export default function App() {
 
  
   const Stack = createNativeStackNavigator();
   return (
+  
     <View style={styles.container}>
 
       <NavigationContainer>
         <Stack.Navigator>
-
-          <Stack.Screen name="home" options={{ headerShown: false }} component={Home} />
-          <Stack.Screen name="account" options={{ headerShown: false }} component={AccountManagement} />
-          <Stack.Screen name="chat" options={{ headerShown: false }} component={Chat} />
+         <Stack.Screen name="signin" options={{headerShown:false}} component={SignIn} />
+         <Stack.Screen name="signup" options={{headerShown:false}} component={SignUp} />
+        
         </Stack.Navigator>
       </NavigationContainer>
     </View>
@@ -33,5 +35,7 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
   },
 });
-// <Stack.Screen name="signin" options={{headerShown:false}} component={SignIn} />
-// <Stack.Screen name="signup" options={{headerShown:false}} component={SignUp} />
+  // <Stack.Screen name="home" options={{ headerShown: false }} component={Home} />
+          // <Stack.Screen name="account" options={{ headerShown: false }} component={AccountManagement} />
+          // <Stack.Screen name="chat" options={{ headerShown: false }} component={Chat} /> 
+          // <Stack.Screen name="payments" options={{ headerShown: false }} component={Payments} /> 

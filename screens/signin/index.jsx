@@ -4,6 +4,8 @@ import { Image, View, StyleSheet, Text, TextInput, Button, TouchableOpacity, Act
 import Icon from "react-native-vector-icons/FontAwesome";
 import Checkbox from 'expo-checkbox';
 import serviceHelper from '../../helperFunction';
+import { Biometrics } from 'react-native-biometrics';
+import { BiometricAuth } from '../../components/biometric/biometric';
 
 export const SignIn = () => {
     const navigation = useNavigation()
@@ -83,6 +85,9 @@ export const SignIn = () => {
                                     : <Text style={{ marginLeft: 7, fontSize: 15, color: 'white' }}>Log In</Text>
                             }
                         </TouchableOpacity>
+                    </View>
+                    <View>
+                    <BiometricAuth/>
                     </View>
                     <View style={{ alignItems: 'center', marginTop: 10 }}>
                         <Text style={{ fontSize: 15 }}> Or </Text>
